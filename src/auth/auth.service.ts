@@ -22,7 +22,11 @@ export class AuthService {
         return this.userService.verfiyUserPassword(password, passwordHash);
     }
 
-    async authenticateUser(payload: { email: string; name: string; organization: string }) {
+    async authenticateUser(payload: { email: string; name: string; organization: string; _id?: any }) {
         return await this.jwtService.signAsync(payload);
+    }
+
+    async updateUserProfile(email: string, updateData: { name?: string; organization?: string }) {
+        return await this.userService.updateUserProfile(email, updateData);
     }
 }

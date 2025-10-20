@@ -11,6 +11,10 @@ import { AuthController } from './auth/auth.contoller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { KeysModule } from './keys/keys.module';
+import { FeaturedController } from './featured/featured.controller';
+import { FeaturedModule } from './featured/featured.module';
+import { RateLimiterModule } from './rate-limiter/rate-limiter.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -35,9 +39,12 @@ import { KeysModule } from './keys/keys.module';
     }),
     UserModule,
     AuthModule,
-    KeysModule
+    KeysModule,
+    FeaturedModule,
+    RateLimiterModule,
+    AnalyticsModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, FeaturedController],
   providers: [AppService],
 })
 export class AppModule {}

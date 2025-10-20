@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>API Rate Limiter Docs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0c5fe4",
+              "background-light": "#f5f7f8",
+              "background-dark": "#101722",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+      details > summary {
+        list-style: none;
+      }
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+<div class="relative min-h-screen" x-data="{ sidebarOpen: false }">
+<header class="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between p-4">
+<div class="flex-1"></div>
+<h1 class="flex-1 text-lg font-bold text-center text-slate-900 dark:text-white">API Rate Limiter</h1>
+<div class="flex items-center justify-end flex-1">
+<button @click="sidebarOpen = true" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<div @click="sidebarOpen = false" class="fixed inset-0 z-50 bg-black/50" x-show="sidebarOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-end="opacity-100" x-transition:enter-start="opacity-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-end="opacity-0" x-transition:leave-start="opacity-100"></div>
+<aside class="fixed top-0 left-0 z-50 w-4/5 h-full max-w-sm p-6 overflow-y-auto bg-background-light dark:bg-background-dark" x-show="sidebarOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-end="translate-x-0" x-transition:enter-start="-translate-x-full" x-transition:leave="transition ease-in duration-200" x-transition:leave-end="-translate-x-full" x-transition:leave-start="translate-x-0">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">Menu</h2>
+<button @click="sidebarOpen = false" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav>
+<ul class="space-y-2">
+<li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">Home</a></li>
+<li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">Dashboard</a></li>
+<li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">API Keys</a></li>
+<li><a class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary font-bold" href="#">Docs</a></li>
+</ul>
+</nav>
+</aside>
+<main class="p-4">
+<div class="space-y-8">
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Documentation</h2>
+<div class="space-y-3">
+<details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
+<summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+<span>Authentication</span>
+<span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+</summary>
+<div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+<p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+</div>
+</details>
+<details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50" open="">
+<summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+<span>Rate Limiting</span>
+<span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+</summary>
+<div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+<p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+</div>
+</details>
+<details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
+<summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+<span>Error Handling</span>
+<span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+</summary>
+<div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+<p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+</div>
+</details>
+</div>
+</div>
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Endpoints</h2>
+<div class="space-y-3">
+<details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50" open="">
+<summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+<span>User Management</span>
+<span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+</summary>
+<div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+<p>This section covers endpoints related to user accounts, including registration, login, and profile management.</p>
+</div>
+</details>
+<details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
+<summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+<span>Data Retrieval</span>
+<span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+</summary>
+<div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+<p>This section covers endpoints related to user accounts, including registration, login, and profile management.</p>
+</div>
+</details>
+</div>
+</div>
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Code Examples</h2>
+<div class="border-b border-slate-200 dark:border-slate-800">
+<nav class="flex -mb-px space-x-6">
+<a class="px-1 py-3 text-sm font-medium border-b-2 text-primary border-primary" href="#">Python</a>
+<a class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50" href="#">JavaScript</a>
+<a class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50" href="#">cURL</a>
+</nav>
+</div>
+<div class="relative mt-4">
+<pre class="p-4 overflow-x-auto text-sm bg-slate-100 dark:bg-slate-800/50 rounded-lg text-slate-100"><code class="language-python text-slate-700 dark:text-slate-300">import requests
+url = "https://api.example.com/users"
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY"
+}
+response = requests.get(url, headers=headers)
+if response.status_code == 200:
+    print(response.json())
+elif response.status_code == 429:
+    print("Rate limit exceeded. Please try again later.")
+else:
+    print(f"Error: {response.status_code}")
+</code></pre>
+<button class="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                Copy
+              </button>
+</div>
+</div>
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Try It Out</h2>
+<div class="space-y-4">
+<div>
+<label class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300" for="api-key">API Key</label>
+<input class="w-full px-4 py-2 border rounded-lg bg-background-light dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 focus:ring-primary focus:border-primary text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" id="api-key" placeholder="Enter API Key" type="text"/>
+</div>
+<div>
+<label class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300" for="endpoint-url">Endpoint URL</label>
+<input class="w-full px-4 py-2 border rounded-lg bg-background-light dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 focus:ring-primary focus:border-primary text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" id="endpoint-url" placeholder="Endpoint URL" type="text"/>
+</div>
+<div class="flex justify-end">
+<button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg shadow-sm bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Send Request
+                </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="sticky bottom-0 z-40 bg-background-light dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+<nav class="grid grid-cols-4 gap-2 px-4 py-2">
+<a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span>Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">key</span>
+<span>API Keys</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium text-white rounded-lg bg-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">description</span>
+<span>Docs</span>
+</a>
+</nav>
+</footer>
+</div>
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</body></html>

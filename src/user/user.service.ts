@@ -28,4 +28,18 @@ export class UserService {
     async verfiyUserPassword(password: string, passwordHash) {
         return await PasswordUtil.comparePassword(password, passwordHash);
     }
+
+    async updateUserProfile(email: string, updateData: { name?: string; organization?: string }) {
+        const user = await this.userModel.findOneAndUpdate(
+            { email },
+            { $set: updateData },
+            { new: true }
+        );
+        
+        if (!user) {
+            throw new Error('User not found');
+        }
+        
+        return user;
+    }
 }

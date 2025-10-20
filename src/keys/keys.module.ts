@@ -6,6 +6,7 @@ import { ApiKey, ApiKeySchema } from './keys.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: ApiKey.name, schema: ApiKeySchema }])],
+  exports: [KeysService],
   providers: [KeysService],
   controllers: [KeysController]
 })

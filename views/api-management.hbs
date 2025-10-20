@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>API Keys - API Rate Limiter</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0c5fe4",
+            "background-light": "#f5f7f8",
+            "background-dark": "#101722",
+          },
+          fontFamily: {
+            "display": ["Inter"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm z-10">
+<div class="flex items-center justify-between p-4">
+<div class="w-12"></div>
+<h1 class="text-lg font-bold text-slate-900 dark:text-white flex-1 text-center">API Keys</h1>
+<button class="flex items-center justify-center h-12 w-12 text-primary">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<div class="px-4 pb-4">
+<div class="relative">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400">search</span>
+</div>
+<input class="w-full rounded-lg border-0 bg-slate-200/60 dark:bg-slate-800/60 pl-10 pr-4 py-3 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-primary" placeholder="Search API keys" type="search"/>
+</div>
+</div>
+</header>
+<main class="flex-grow divide-y divide-slate-200 dark:divide-slate-800">
+<div class="flex items-center justify-between gap-4 p-4 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="flex-grow">
+<p class="font-medium text-slate-900 dark:text-white">Production Key</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Created: 2023-08-15</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Usage: 1,234,567</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/50 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-300">Active</span>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4 p-4 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="flex-grow">
+<p class="font-medium text-slate-900 dark:text-white">Staging Key</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Created: 2023-07-22</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Usage: 54,321</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-full bg-slate-200 dark:bg-slate-700 px-2.5 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-300">Inactive</span>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4 p-4 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="flex-grow">
+<p class="font-medium text-slate-900 dark:text-white">Development Key</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Created: 2023-06-10</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Usage: 9,876</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/50 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-300">Active</span>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4 p-4 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="flex-grow">
+<p class="font-medium text-slate-900 dark:text-white">Legacy Key</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Created: 2023-05-05</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Usage: 0</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-full bg-red-100 dark:bg-red-900/50 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:text-red-300">Revoked</span>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between gap-4 p-4 hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="flex-grow">
+<p class="font-medium text-slate-900 dark:text-white">Test Key Alpha</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Created: 2023-04-18</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Usage: 1,002</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/50 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-300">Active</span>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500">more_vert</span>
+</div>
+</div>
+</main>
+<footer class="sticky bottom-0 border-t border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<nav class="flex justify-around items-center pt-2 pb-3">
+<a class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-xs font-medium">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">key</span>
+<span class="text-xs font-medium">API Keys</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-xs font-medium">Docs</span>
+</a>
+</nav>
+</footer>
+</div>
+
+</body></html>

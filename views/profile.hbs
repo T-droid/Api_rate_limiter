@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile - API Rate Limiter</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0c5fe4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        display: ["Inter"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+    <div class="flex h-full min-h-screen w-full flex-col">
+        <!-- Header -->
+        <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200/80 bg-background-light/80 p-4 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
+            <button onclick="window.history.back()" class="flex h-10 w-10 items-center justify-center rounded-full text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-800">
+                <span class="material-symbols-outlined text-2xl">arrow_back</span>
+            </button>
+            <h1 class="text-lg font-bold text-slate-900 dark:text-white">Profile</h1>
+            <button id="logoutBtn" class="flex h-10 w-10 items-center justify-center rounded-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
+                <span class="material-symbols-outlined text-2xl">logout</span>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4">
+            <!-- Alert Container -->
+            <div id="alertContainer" class="hidden rounded-lg p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span id="alertIcon" class="material-symbols-outlined text-lg"></span>
+                    </div>
+                    <div class="ml-3">
+                        <p id="alertMessage" class="text-sm font-medium"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="space-y-6">
+                <!-- Profile Info -->
+                <div class="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Information</h2>
+                    
+                    <form id="profileForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    Full Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    name="name" 
+                                    required 
+                                    class="block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                    placeholder="Loading..."
+                                />
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    Email Address
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    required 
+                                    disabled
+                                    class="block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 opacity-50 cursor-not-allowed"
+                                    placeholder="Loading..."
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="organization" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                Organization
+                            </label>
+                            <input 
+                                type="text" 
+                                id="organization" 
+                                name="organization" 
+                                required 
+                                class="block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                placeholder="Loading..."
+                            />
+                        </div>
+
+                        <div class="pt-4">
+                            <button 
+                                type="submit" 
+                                id="updateProfileBtn"
+                                class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <span id="updateProfileText">Update Profile</span>
+                                <span id="updateProfileSpinner" class="hidden ml-2">
+                                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Account Statistics -->
+                <div class="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Account Statistics</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary" id="apiKeysCount">-</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">API Keys</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600" id="totalRequests">-</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Total Requests</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="memberSince">-</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Days Active</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-600" id="lastActivity">-</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Hours Ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Security</h2>
+                    
+                    <div class="space-y-4">
+                        <button 
+                            id="changePasswordBtn"
+                            class="w-full flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 p-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                        >
+                            <div class="flex items-center">
+                                <span class="material-symbols-outlined text-slate-400 mr-3">lock</span>
+                                <div>
+                                    <div class="font-medium text-slate-900 dark:text-white">Change Password</div>
+                                    <div class="text-sm text-slate-500 dark:text-slate-400">Update your account password</div>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+                        </button>
+
+                        <button 
+                            id="revokeAllKeysBtn"
+                            class="w-full flex items-center justify-between rounded-lg border border-red-200 dark:border-red-800 p-4 text-left hover:bg-red-50 dark:hover:bg-red-900/20"
+                        >
+                            <div class="flex items-center">
+                                <span class="material-symbols-outlined text-red-500 mr-3">key_off</span>
+                                <div>
+                                    <div class="font-medium text-red-700 dark:text-red-300">Revoke All API Keys</div>
+                                    <div class="text-sm text-red-600 dark:text-red-400">This will disable all your API keys</div>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-red-500">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <footer class="sticky bottom-0 z-10 border-t border-slate-200/80 bg-background-light/80 pb-3 pt-2 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
+            <nav class="flex justify-around">
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/">
+                    <span class="material-symbols-outlined">home</span>
+                    <p class="text-xs font-medium">Home</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <p class="text-xs font-medium">Dashboard</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/keys">
+                    <span class="material-symbols-outlined">key</span>
+                    <p class="text-xs font-medium">API Keys</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/docs">
+                    <span class="material-symbols-outlined">description</span>
+                    <p class="text-xs font-medium">Docs</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="/profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <p class="text-xs font-bold">Profile</p>
+                </a>
+            </nav>
+        </footer>
+    </div>
+
+    <script>
+        let authToken = localStorage.getItem('authToken');
+        let userData = {};
+
+        // Check authentication
+        if (!authToken) {
+            window.location.href = '/auth/login';
+        }
+
+        // Show alert function
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertContainer.className = `rounded-lg p-4 mb-4 ${type === 'error' ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' : type === 'success' ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800' : 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'}`;
+            alertIcon.textContent = type === 'error' ? 'error' : type === 'success' ? 'check_circle' : 'info';
+            alertIcon.className = `material-symbols-outlined text-lg ${type === 'error' ? 'text-red-500' : type === 'success' ? 'text-green-500' : 'text-blue-500'}`;
+            alertMessage.textContent = message;
+            alertMessage.className = `text-sm font-medium ${type === 'error' ? 'text-red-700 dark:text-red-300' : type === 'success' ? 'text-green-700 dark:text-green-300' : 'text-blue-700 dark:text-blue-300'}`;
+            
+            alertContainer.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertContainer.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Load profile data
+        async function loadProfileData() {
+            try {
+                const response = await fetch('/auth/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    userData = await response.json();
+                    updateProfileForm();
+                    loadStatistics();
+                } else if (response.status === 401) {
+                    window.location.href = '/auth/login';
+                } else {
+                    showAlert('error', 'Failed to load profile data');
+                }
+            } catch (error) {
+                showAlert('error', 'Network error while loading profile');
+            }
+        }
+
+        // Update profile form
+        function updateProfileForm() {
+            document.getElementById('name').value = userData.name || '';
+            document.getElementById('email').value = userData.email || '';
+            document.getElementById('organization').value = userData.organization || '';
+        }
+
+        // Load statistics
+        async function loadStatistics() {
+            try {
+                // Load API keys count
+                const keysResponse = await fetch('/api-keys', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (keysResponse.ok) {
+                    const keysData = await keysResponse.json();
+                    document.getElementById('apiKeysCount').textContent = keysData.keys?.length || 0;
+                    
+                    // Calculate total requests from all keys
+                    const totalRequests = keysData.keys?.reduce((sum, key) => sum + (key.usageCount || 0), 0) || 0;
+                    document.getElementById('totalRequests').textContent = totalRequests.toLocaleString();
+                }
+
+                // Calculate days since creation
+                if (userData.createdAt) {
+                    const daysSince = Math.floor((Date.now() - new Date(userData.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+                    document.getElementById('memberSince').textContent = daysSince;
+                }
+
+                // Calculate last activity (mock for now)
+                document.getElementById('lastActivity').textContent = '2';
+
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Update profile
+        async function updateProfile(formData) {
+            const updateBtn = document.getElementById('updateProfileBtn');
+            const btnText = document.getElementById('updateProfileText');
+            const spinner = document.getElementById('updateProfileSpinner');
+            
+            updateBtn.disabled = true;
+            btnText.textContent = 'Updating...';
+            spinner.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/auth/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    showAlert('success', 'Profile updated successfully!');
+                    userData = { ...userData, ...formData };
+                } else {
+                    const error = await response.json();
+                    showAlert('error', error.message || 'Failed to update profile');
+                }
+            } catch (error) {
+                showAlert('error', 'Network error while updating profile');
+            } finally {
+                updateBtn.disabled = false;
+                btnText.textContent = 'Update Profile';
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('authToken');
+            window.location.href = '/auth/login';
+        }
+
+        // Event listeners
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                organization: document.getElementById('organization').value
+            };
+            
+            await updateProfile(formData);
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        document.getElementById('changePasswordBtn').addEventListener('click', () => {
+            showAlert('info', 'Password change functionality will be implemented soon.');
+        });
+
+        document.getElementById('revokeAllKeysBtn').addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to revoke ALL API keys? This action cannot be undone and will break any applications using these keys.')) {
+                return;
+            }
+            
+            showAlert('info', 'Revoke all keys functionality will be implemented soon.');
+        });
+
+        // Load profile data on page load
+        document.addEventListener('DOMContentLoaded', loadProfileData);
+    </script>
+</body>
+</html>
