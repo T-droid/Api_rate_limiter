@@ -18,7 +18,7 @@ export class ApiKeyGuard implements CanActivate {
             const user = await this.keyService.validateKey(apiKey);
             request.user = user;
 
-            const allowed = await this.rateLimiterService.consume(apiKey);
+            const allowed = await this.rateLimiterService.consume(apiKey, (user as any).id);
             if (!allowed) throw new UnauthorizedException("Rate limit exceeded");
 
             return true;

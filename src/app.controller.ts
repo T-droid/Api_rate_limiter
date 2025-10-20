@@ -12,16 +12,6 @@ export class AppController {
     return { message: "Hello world"};
   }
 
-  @Get('dashboard')
-  @UseGuards(AuthGuard)
-  @Render('dashboard')
-  getDashboard(@Request() req) {
-    return { 
-      user: req.user,
-      title: 'Dashboard'
-    };
-  }
-
   @Get('keys')
   @UseGuards(AuthGuard)
   @Render('api-keys')

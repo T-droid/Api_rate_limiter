@@ -19,7 +19,7 @@ export class KeysService {
 
     async validateKey(rawKey: string) {
         const keyHash = this.hashKey(rawKey);
-        const record = await this.apikeyModel.findOne({ keyHash, active: true });
+        const record = await this.apikeyModel.findOne({ keyHash, active: true }).populate('user');
 
         if (!record) throw new UnauthorizedException('Invalid API Key');
 

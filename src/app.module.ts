@@ -15,6 +15,7 @@ import { FeaturedController } from './featured/featured.controller';
 import { FeaturedModule } from './featured/featured.module';
 import { RateLimiterModule } from './rate-limiter/rate-limiter.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { AnalyticsModule } from './analytics/analytics.module';
     KeysModule,
     FeaturedModule,
     RateLimiterModule,
-    AnalyticsModule
+    AnalyticsModule,
+    DashboardModule
   ],
   controllers: [AppController, FeaturedController],
   providers: [AppService],

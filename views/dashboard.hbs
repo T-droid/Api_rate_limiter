@@ -39,103 +39,62 @@
   </style>
   </head>
 <body class="bg-background-light dark:bg-background-dark font-display">
-<div class="relative min-h-screen">
-<aside class="fixed inset-y-0 left-0 z-20 w-64 -translate-x-full transform bg-background-light dark:bg-background-dark p-4 transition-transform duration-300 peer-checked:translate-x-0 lg:translate-x-0 lg:bg-transparent lg:dark:bg-transparent">
-<div class="flex h-full flex-col justify-between">
-<div>
-<div class="mb-8 flex items-center gap-3 px-4 pt-4">
-<div class="h-10 w-10 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center text-primary font-bold text-lg">A</div>
-<p class="text-lg font-bold text-black dark:text-white">Alex</p>
+<div class="flex flex-col min-h-screen">
+{{> header}}
+<main class="flex-grow">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Page Header -->
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+<p class="mt-2 text-gray-600 dark:text-gray-400">Monitor your API usage and performance</p>
 </div>
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-black dark:text-white hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
-<span class="material-symbols-outlined">home</span>
-<span class="font-medium">Home</span>
-</a>
-<a class="flex items-center gap-3 rounded-lg bg-primary px-4 py-3 text-white" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-medium">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-black dark:text-white hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
-<span class="material-symbols-outlined">key</span>
-<span class="font-medium">API Keys</span>
-</a>
-<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-black dark:text-white hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
-<span class="material-symbols-outlined">description</span>
-<span class="font-medium">Docs</span>
-</a>
-</nav>
-</div>
-<button class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-black dark:text-white hover:bg-primary/10 dark:hover:bg-primary/20">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-medium">Logout</span>
-</button>
-</div>
-</aside>
-<input class="peer hidden" id="nav-toggle" type="checkbox"/>
-<main class="lg:pl-64">
-<header class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 p-4 backdrop-blur-sm dark:bg-background-dark/80 lg:justify-end">
-<label class="cursor-pointer lg:hidden" for="nav-toggle">
-<span class="material-symbols-outlined text-3xl text-black dark:text-white">menu</span>
-</label>
-<h1 class="text-xl font-bold text-black dark:text-white lg:hidden">Dashboard</h1>
-<div class="hidden items-center gap-4 lg:flex">
-<div class="h-10 w-10 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center text-primary font-bold text-lg">A</div>
-<div>
-<p class="font-bold text-black dark:text-white">Alex</p>
-<p class="text-sm text-black/60 dark:text-white/60">Administrator</p>
-</div>
-</div>
-</header>
-<div class="p-4 sm:p-6">
-<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
 <div class="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
 <p class="text-sm font-medium text-black/60 dark:text-white/60">Total Requests</p>
-<p class="mt-2 text-3xl font-bold text-black dark:text-white">12,345</p>
-<p class="mt-1 text-sm font-medium text-green-500">+12%</p>
+<p class="mt-2 text-3xl font-bold text-black dark:text-white" id="totalRequests">{{dashboardData.totalRequests}}</p>
+<p class="mt-1 text-sm font-medium {{#if dashboardData.requestsTrend.direction}}{{#eq dashboardData.requestsTrend.direction 'up'}}text-green-500{{/eq}}{{#eq dashboardData.requestsTrend.direction 'down'}}text-red-500{{/eq}}{{#eq dashboardData.requestsTrend.direction 'stable'}}text-gray-500{{/eq}}{{/if}}" id="requestsTrend">
+  {{#if dashboardData.requestsTrend.direction}}
+    {{#eq dashboardData.requestsTrend.direction 'up'}}+{{/eq}}{{#eq dashboardData.requestsTrend.direction 'down'}}-{{/eq}}{{dashboardData.requestsTrend.percentage}}%
+  {{else}}
+    --
+  {{/if}}
+</p>
 </div>
 <div class="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
-<p class="text-sm font-medium text-black/60 dark:text-white/60">Successful Requests</p>
-<p class="mt-2 text-3xl font-bold text-black dark:text-white">11,876</p>
-<p class="mt-1 text-sm font-medium text-red-500">-2%</p>
+<p class="text-sm font-medium text-black/60 dark:text-white/60">Success Rate</p>
+<p class="mt-2 text-3xl font-bold text-black dark:text-white" id="successRate">{{dashboardData.successRate}}%</p>
+<p class="mt-1 text-sm font-medium text-gray-500" id="successfulCount">{{dashboardData.successfulRequests}} successful</p>
 </div>
-<div class="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20 sm:col-span-2 xl:col-span-1">
+<div class="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
+<p class="text-sm font-medium text-black/60 dark:text-white/60">API Keys</p>
+<p class="mt-2 text-3xl font-bold text-black dark:text-white" id="totalApiKeys">{{dashboardData.totalApiKeys}}</p>
+<p class="mt-1 text-sm font-medium text-gray-500" id="activeApiKeys">{{dashboardData.activeApiKeys}} active</p>
+</div>
+<div class="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
 <p class="text-sm font-medium text-black/60 dark:text-white/60">Error Rate</p>
-<p class="mt-2 text-3xl font-bold text-black dark:text-white">3.8%</p>
-<p class="mt-1 text-sm font-medium text-green-500">+5%</p>
+<p class="mt-2 text-3xl font-bold text-black dark:text-white" id="errorRate">{{dashboardData.errorRate}}%</p>
+<p class="mt-1 text-sm font-medium text-gray-500" id="failedCount">{{dashboardData.failedRequests}} failed</p>
 </div>
 </div>
 <div class="mt-8 rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
 <div>
 <p class="text-sm font-medium text-black/60 dark:text-white/60">Requests Over Time</p>
-<p class="mt-2 text-3xl font-bold text-black dark:text-white">12,345</p>
+<p class="mt-2 text-3xl font-bold text-black dark:text-white" id="chartTotalRequests">{{dashboardData.totalRequests}}</p>
 <div class="mt-1 flex items-center gap-2">
 <p class="text-sm text-black/60 dark:text-white/60">Last 7 Days</p>
-<p class="text-sm font-medium text-green-500">+12%</p>
+<p class="text-sm font-medium text-gray-500" id="chartAverage">{{dashboardData.avgRequestsPerDay}} avg/day</p>
 </div>
 </div>
 </div>
-<div class="mt-6 h-48">
-<svg fill="none" height="100%" preserveAspectRatio="none" viewBox="0 0 472 150" width="100%" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z" fill="url(#chart-gradient)"></path>
-<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#0c5fe4" stroke-linecap="round" stroke-width="2"></path>
-<defs>
-<linearGradient gradientUnits="userSpaceOnUse" id="chart-gradient" x1="236" x2="236" y1="1" y2="149">
-<stop stop-color="#0c5fe4" stop-opacity="0.2"></stop>
-<stop offset="1" stop-color="#0c5fe4" stop-opacity="0"></stop>
-</linearGradient>
-</defs>
-</svg>
+<div class="mt-6 h-48" id="chartContainer">
+<!-- Chart will be dynamically generated based on dashboardData.dailyData -->
+<canvas id="requestsChart" width="472" height="150"></canvas>
 </div>
-<div class="mt-4 flex justify-around">
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Mon</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Tue</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Wed</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Thu</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Fri</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Sat</p>
-<p class="text-xs font-bold text-black/60 dark:text-white/60">Sun</p>
+<div class="mt-4 flex justify-around" id="chartLabels">
+{{#each dashboardData.dailyData}}
+<p class="text-xs font-bold text-black/60 dark:text-white/60">{{formatDate this.date}}</p>
+{{/each}}
 </div>
 </div>
 <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -146,28 +105,22 @@
 <div class="inline-block min-w-full py-2 align-middle">
 <div class="overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
 <table class="min-w-full divide-y divide-black/10 dark:divide-white/10">
-<tbody class="divide-y divide-black/10 bg-white dark:divide-white/10 dark:bg-black/20">
+<tbody class="divide-y divide-black/10 bg-white dark:divide-white/10 dark:bg-black/20" id="recentActivityTable">
+{{#each dashboardData.recentActivity}}
 <tr>
 <td class="whitespace-nowrap px-6 py-4">
-<p class="font-medium text-black dark:text-white">200 OK</p>
-<p class="text-sm text-black/60 dark:text-white/60">GET /users</p>
+<p class="font-medium text-black dark:text-white">{{this.status}} {{this.statusText}}</p>
+<p class="text-sm text-black/60 dark:text-white/60">{{this.method}} {{this.endpoint}}</p>
 </td>
-<td class="whitespace-nowrap px-6 py-4 text-right text-sm text-black/60 dark:text-white/60">5 min ago</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm text-black/60 dark:text-white/60">{{formatTime this.timestamp}}</td>
 </tr>
+{{else}}
 <tr>
-<td class="whitespace-nowrap px-6 py-4">
-<p class="font-medium text-black dark:text-white">201 Created</p>
-<p class="text-sm text-black/60 dark:text-white/60">POST /orders</p>
+<td class="whitespace-nowrap px-6 py-4 text-center" colspan="2">
+<p class="text-sm text-black/60 dark:text-white/60">No recent activity</p>
 </td>
-<td class="whitespace-nowrap px-6 py-4 text-right text-sm text-black/60 dark:text-white/60">10 min ago</td>
 </tr>
-<tr>
-<td class="whitespace-nowrap px-6 py-4">
-<p class="font-medium text-black dark:text-white">200 OK</p>
-<p class="text-sm text-black/60 dark:text-white/60">GET /products</p>
-</td>
-<td class="whitespace-nowrap px-6 py-4 text-right text-sm text-black/60 dark:text-white/60">15 min ago</td>
-</tr>
+{{/each}}
 </tbody>
 </table>
 </div>
@@ -178,14 +131,15 @@
 <div class="space-y-8">
 <div>
 <h2 class="text-lg font-bold text-black dark:text-white">Rate Limit Status</h2>
-<div class="mt-4 rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20">
+<div class="mt-4 rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-black/20" id="rateLimitStatus">
 <div class="flex items-center justify-between text-sm">
 <p class="font-medium text-black/60 dark:text-white/60">Requests</p>
-<p class="font-medium text-black dark:text-white">750 / 1000</p>
+<p class="font-medium text-black dark:text-white" id="rateLimitText">Loading...</p>
 </div>
 <div class="mt-2 h-2 rounded-full bg-primary/20 dark:bg-primary/30">
-<div class="h-2 rounded-full bg-primary" style="width: 75%;"></div>
+<div class="h-2 rounded-full bg-primary" id="rateLimitBar" style="width: 0%;"></div>
 </div>
+<div class="mt-2 text-xs text-black/60 dark:text-white/60" id="rateLimitReset">Reset time: Loading...</div>
 </div>
 </div>
 <div>
@@ -198,114 +152,169 @@
 </div>
 </div>
 </div>
+</div>
 </main>
-<div class="fixed inset-0 z-10 bg-black/50 peer-checked:block lg:hidden"></div>
 </div>
 
 <script>
-    let authToken = localStorage.getItem('authToken');
-    let dashboardData = {};
+    let dashboardData = {{{json dashboardData}}};
 
-    // Check authentication
-    if (!authToken) {
-        window.location.href = '/auth/login';
-    }
-
-    // Load dashboard data
-    async function loadDashboardData() {
-        try {
-            // Load user profile
-            const userResponse = await fetch('/auth/profile', {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-            
-            if (userResponse.ok) {
-                const userData = await userResponse.json();
-                updateUserInfo(userData);
-            }
-
-            // Load API keys statistics
-            const keysResponse = await fetch('/api-keys', {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-            
-            if (keysResponse.ok) {
-                const keysData = await keysResponse.json();
-                updateApiKeysStats(keysData.keys || []);
-            }
-
-            // Load analytics data if available
-            try {
-                const analyticsResponse = await fetch('/analytics/summary', {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-                
-                if (analyticsResponse.ok) {
-                    const analyticsData = await analyticsResponse.json();
-                    updateAnalyticsStats(analyticsData);
-                }
-            } catch (error) {
-                // Analytics endpoint might not be implemented yet
-                console.log('Analytics data not available yet');
-            }
-
-        } catch (error) {
-            console.error('Error loading dashboard data:', error);
-        }
-    }
-
-    // Update user info
-    function updateUserInfo(userData) {
-        const userNameElement = document.querySelector('.text-lg.font-bold.text-black.dark\\:text-white');
-        if (userNameElement && userData.name) {
-            userNameElement.textContent = userData.name.split(' ')[0]; // First name only
-        }
-    }
-
-    // Update API keys statistics
-    function updateApiKeysStats(apiKeys) {
-        const totalKeys = apiKeys.length;
-        const activeKeys = apiKeys.filter(key => key.active).length;
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeChart();
+        loadRateLimitStatus();
+        formatRecentActivity();
         
-        // Update the API Keys card
-        const apiKeysCards = document.querySelectorAll('.rounded-xl.border.border-black\\/10.bg-white.p-4');
-        if (apiKeysCards.length > 0) {
-            const apiKeysCard = apiKeysCards[0];
-            const countElement = apiKeysCard.querySelector('.text-2xl.font-bold');
-            const labelElement = apiKeysCard.querySelector('.text-sm.text-black\\/60');
+        // Refresh data every 30 seconds
+        setInterval(refreshDashboardData, 30000);
+    });
+
+    // Initialize the requests chart
+    function initializeChart() {
+        const canvas = document.getElementById('requestsChart');
+        const ctx = canvas.getContext('2d');
+        
+        if (!dashboardData.dailyData || dashboardData.dailyData.length === 0) {
+            // Draw empty state
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+            return;
+        }
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const data = dashboardData.dailyData;
+        const maxValue = Math.max(...data.map(d => d.totalCalls)) || 1;
+        const padding = 40;
+        const chartWidth = canvas.width - (padding * 2);
+        const chartHeight = canvas.height - (padding * 2);
+        
+        // Draw chart area
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(padding, padding, chartWidth, chartHeight);
+        
+        // Draw data points and lines
+        if (data.length > 1) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#0c5fe4';
+            ctx.lineWidth = 2;
             
-            if (countElement) countElement.textContent = totalKeys;
-            if (labelElement) labelElement.textContent = `${activeKeys} active`;
+            data.forEach((point, index) => {
+                const x = padding + (index / (data.length - 1)) * chartWidth;
+                const y = padding + chartHeight - (point.totalCalls / maxValue) * chartHeight;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+                
+                // Draw point
+                ctx.fillStyle = '#0c5fe4';
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            ctx.stroke();
         }
     }
 
-    // Update analytics statistics
-    function updateAnalyticsStats(analyticsData) {
-        if (analyticsData.totalRequests !== undefined) {
-            // Update requests card
-            const cards = document.querySelectorAll('.rounded-xl.border.border-black\\/10.bg-white.p-4');
-            if (cards.length > 1) {
-                const requestsCard = cards[1];
-                const countElement = requestsCard.querySelector('.text-2xl.font-bold');
-                if (countElement) countElement.textContent = analyticsData.totalRequests.toLocaleString();
+    // Load rate limit status
+    async function loadRateLimitStatus() {
+        try {
+            const response = await fetch('/dashboard/api/rate-limit-status');
+            if (response.ok) {
+                const rateLimitData = await response.json();
+                updateRateLimitDisplay(rateLimitData);
             }
+        } catch (error) {
+            console.error('Error loading rate limit status:', error);
+            document.getElementById('rateLimitText').textContent = 'Error loading data';
         }
+    }
 
-        if (analyticsData.rateLimitHits !== undefined) {
-            // Update rate limit card
-            const cards = document.querySelectorAll('.rounded-xl.border.border-black\\/10.bg-white.p-4');
-            if (cards.length > 2) {
-                const rateLimitCard = cards[2];
-                const countElement = rateLimitCard.querySelector('.text-2xl.font-bold');
-                if (countElement) countElement.textContent = analyticsData.rateLimitHits.toLocaleString();
+    // Update rate limit display
+    function updateRateLimitDisplay(data) {
+        document.getElementById('rateLimitText').textContent = `${data.current} / ${data.limit}`;
+        document.getElementById('rateLimitBar').style.width = `${data.percentage}%`;
+        
+        const resetTime = new Date(data.resetTime).toLocaleTimeString();
+        document.getElementById('rateLimitReset').textContent = `Resets at: ${resetTime}`;
+    }
+
+    // Format recent activity timestamps
+    function formatRecentActivity() {
+        const timeElements = document.querySelectorAll('#recentActivityTable td:last-child');
+        timeElements.forEach(element => {
+            const timestamp = element.textContent;
+            if (timestamp && timestamp !== 'No recent activity') {
+                try {
+                    const date = new Date(timestamp);
+                    const now = new Date();
+                    const diffMs = now - date;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    
+                    if (diffMins < 1) {
+                        element.textContent = 'Just now';
+                    } else if (diffMins < 60) {
+                        element.textContent = `${diffMins} min ago`;
+                    } else {
+                        const diffHours = Math.floor(diffMins / 60);
+                        element.textContent = `${diffHours}h ago`;
+                    }
+                } catch (error) {
+                    // Keep original text if parsing fails
+                }
             }
+        });
+    }
+
+    // Refresh dashboard data
+    async function refreshDashboardData() {
+        try {
+            const response = await fetch('/dashboard/api/dashboard-data');
+            if (response.ok) {
+                const newData = await response.json();
+                dashboardData = newData;
+                updateDashboardDisplay(newData);
+            }
+        } catch (error) {
+            console.error('Error refreshing dashboard data:', error);
         }
+    }
+
+    // Update dashboard display with new data
+    function updateDashboardDisplay(data) {
+        // Update metrics
+        document.getElementById('totalRequests').textContent = data.totalRequests.toLocaleString();
+        document.getElementById('successRate').textContent = `${data.successRate}%`;
+        document.getElementById('totalApiKeys').textContent = data.totalApiKeys;
+        document.getElementById('activeApiKeys').textContent = `${data.activeApiKeys} active`;
+        document.getElementById('errorRate').textContent = `${data.errorRate}%`;
+        document.getElementById('successfulCount').textContent = `${data.successfulRequests} successful`;
+        document.getElementById('failedCount').textContent = `${data.failedRequests} failed`;
+        
+        // Update trend
+        const trendElement = document.getElementById('requestsTrend');
+        if (data.requestsTrend && data.requestsTrend.direction !== 'stable') {
+            const sign = data.requestsTrend.direction === 'up' ? '+' : '-';
+            trendElement.textContent = `${sign}${data.requestsTrend.percentage}%`;
+            trendElement.className = `mt-1 text-sm font-medium ${data.requestsTrend.direction === 'up' ? 'text-green-500' : 'text-red-500'}`;
+        } else {
+            trendElement.textContent = '--';
+            trendElement.className = 'mt-1 text-sm font-medium text-gray-500';
+        }
+        
+        // Update chart
+        initializeChart();
+        
+        // Update rate limit status
+        loadRateLimitStatus();
     }
 
     // Generate API Key action
@@ -345,7 +354,7 @@
     // Logout function
     function logout() {
         localStorage.removeItem('authToken');
-        window.location.href = '/auth/login';
+        window.location.href = '/auth/logout';
     }
 
     // Add logout functionality to any logout buttons
@@ -360,4 +369,5 @@
     });
 </script>
 
+<script src="/js/navigation.js"></script>
 </body></html>

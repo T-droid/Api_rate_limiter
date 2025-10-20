@@ -105,4 +105,10 @@ export class AuthController {
             throw new HttpException("Failed to update profile", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Get("logout")
+    logout(@Res() res: Response) {
+        res.clearCookie('access_token');
+        return res.redirect('/auth/login');
+    }
 }

@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-<head>
-    <meta charset="utf-8"/>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Page Header -->
+                <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">API Keys</h1>
+                        <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your API keys and access tokens</p>
+                    </div>
+                    <button id="generateKeyBtn" class="mt-4 sm:mt-0 flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-medium">
+                        <span class="material-symbols-outlined text-lg">add</span>
+                        Generate New Key
+                    </button>
+                </div>  <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>API Keys - API Rate Limiter</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -42,12 +52,9 @@
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
-    <div class="flex h-full min-h-screen w-full flex-col">
-        <!-- Header -->
-        <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200/80 bg-background-light/80 p-4 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
-            <button class="flex h-10 w-10 items-center justify-center rounded-full text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-800">
-                <span class="material-symbols-outlined text-2xl">arrow_back</span>
-            </button>
+    <div class="flex flex-col min-h-screen">
+        {{> header}}
+        <main class="flex-grow">
             <h1 class="text-lg font-bold text-slate-900 dark:text-white">API Keys</h1>
             <button id="generateKeyBtn" class="flex h-10 w-10 items-center justify-center rounded-full text-primary hover:bg-primary/10">
                 <span class="material-symbols-outlined text-2xl">add</span>
@@ -106,33 +113,8 @@
                 <!-- API Keys will be populated here -->
                 <div id="apiKeysContainer"></div>
             </div>
+        </div>
         </main>
-
-        <!-- Bottom Navigation -->
-        <footer class="sticky bottom-0 z-10 border-t border-slate-200/80 bg-background-light/80 pb-3 pt-2 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
-            <nav class="flex justify-around">
-                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/">
-                    <span class="material-symbols-outlined">home</span>
-                    <p class="text-xs font-medium">Home</p>
-                </a>
-                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/dashboard">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <p class="text-xs font-medium">Dashboard</p>
-                </a>
-                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="/keys">
-                    <span class="material-symbols-outlined">key</span>
-                    <p class="text-xs font-bold">API Keys</p>
-                </a>
-                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/docs">
-                    <span class="material-symbols-outlined">description</span>
-                    <p class="text-xs font-medium">Docs</p>
-                </a>
-                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="/analytics">
-                    <span class="material-symbols-outlined">monitoring</span>
-                    <p class="text-xs font-medium">Analytics</p>
-                </a>
-            </nav>
-        </footer>
     </div>
 
     <!-- Generate Key Modal -->
@@ -428,5 +410,7 @@
             loadApiKeys();
         });
     </script>
+
+    <script src="/js/navigation.js"></script>
 </body>
 </html>
