@@ -1,12 +1,22 @@
-import { Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Request, UseGuards, Render } from '@nestjs/common';
 import { KeysService } from './keys.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 
-@Controller('api-keys')
+@Controller('keys')
 export class KeysController {
     constructor(private readonly keysService: KeysService) {}
 
-    @Post('generate')
+    @Get('')
+    @UseGuards(AuthGuard)
+    @Render('api-keys')
+    getApiKeysPage(@Request() req) {
+        return { 
+            user: req.user,
+            title: 'API Keys'
+        };
+    }
+
+    @Post('api/generate')
     @UseGuards(AuthGuard)
     async createKey(@Request() req) {
         const { user } = req;
@@ -18,7 +28,7 @@ export class KeysController {
         }
     }
 
-    @Delete('revoke/:keyId')
+    @Delete('api/revoke/:keyId')
     @UseGuards(AuthGuard)
     async revokeKey(@Param('keyId') keyId: string, @Request() req) {
         const { user } = req;
@@ -30,7 +40,7 @@ export class KeysController {
         };
     }
 
-    @Get()
+    @Get('api/list')
     @UseGuards(AuthGuard)
     async getUserKeys(@Request() req) {
         const { user } = req;

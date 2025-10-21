@@ -4,9 +4,9 @@
 # This script tests the API rate limiting functionality
 
 # Configuration
-API_KEY="sk-bbc936c4aebfe086d5780ad618590e0e6f9de31f842ee297"  # Replace with your actual API key
+API_KEY="sk-4abae6f232f6b19547a34e876c37d9a044ec26604588ddad"  # Replace with your actual API key
 BASE_URL="http://localhost:3000"
-ENDPOINT="/featured"
+ENDPOINT="/documentation/featured"
 MAX_REQUESTS=15  # Test more than the bucket capacity (10)
 
 # Colors for output
@@ -27,14 +27,14 @@ echo ""
 # Function to make API request
 make_request() {
     local request_num=$1
-    local response=$(curl -s -w "\n%{http_code}" -H "x-api-key: ${API_KEY}" "${BASE_URL}${ENDPOINT}")
+    local response=$(curl -s -w "\n%{http_code}" -X POST -H "x-api-key: ${API_KEY}" -H "Content-Type: application/json" -d '{"testMode": true}' "${BASE_URL}${ENDPOINT}")
     local body=$(echo "$response" | head -n -1)
     local status_code=$(echo "$response" | tail -n 1)
     
-    if [ "$status_code" -eq 200 ]; then
+    if [ "$status_code" -eq 200 ] || [ "$status_code" -eq 201 ]; then
         echo -e "${GREEN}✅ Request ${request_num}: SUCCESS${NC} (Status: ${status_code})"
         echo -e "   Response: ${body}"
-    elif [ "$status_code" -eq 401 ]; then
+    elif [ "$status_code" -eq 429 ] || [ "$status_code" -eq 401 ]; then
         echo -e "${RED}❌ Request ${request_num}: RATE LIMITED${NC} (Status: ${status_code})"
         echo -e "   Response: ${body}"
     else
@@ -71,7 +71,7 @@ echo -e "${BLUE}📋 Test 3: Invalid API Key${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${YELLOW}🔑 Testing with invalid API key...${NC}"
 
-invalid_response=$(curl -s -w "\n%{http_code}" -H "x-api-key: invalid-key" "${BASE_URL}${ENDPOINT}")
+invalid_response=$(curl -s -w "\n%{http_code}" -X POST -H "x-api-key: invalid-key" -H "Content-Type: application/json" -d '{"testMode": true}' "${BASE_URL}${ENDPOINT}")
 invalid_body=$(echo "$invalid_response" | head -n -1)
 invalid_status=$(echo "$invalid_response" | tail -n 1)
 
@@ -89,7 +89,7 @@ echo -e "${BLUE}📋 Test 4: Missing API Key${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${YELLOW}🚫 Testing without API key...${NC}"
 
-no_key_response=$(curl -s -w "\n%{http_code}" "${BASE_URL}${ENDPOINT}")
+no_key_response=$(curl -s -w "\n%{http_code}" -X POST -H "Content-Type: application/json" -d '{"testMode": true}' "${BASE_URL}${ENDPOINT}")
 no_key_body=$(echo "$no_key_response" | head -n -1)
 no_key_status=$(echo "$no_key_response" | tail -n 1)
 
@@ -105,7 +105,7 @@ echo ""
 echo -e "${BLUE}🏁 Rate Limiter Test Complete!${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${YELLOW}Expected Behavior:${NC}"
-echo -e "• First 10 requests should succeed (200)"
-echo -e "• Remaining requests should be rate limited (401)"
+echo -e "• First ~10 requests should succeed (200/201)"
+echo -e "• Remaining requests should be rate limited (429/401)"
 echo -e "• After waiting, new requests should succeed"
 echo -e "• Invalid/missing API keys should be rejected (401)"

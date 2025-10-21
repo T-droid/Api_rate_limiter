@@ -45,7 +45,10 @@ function isAuthenticated() {
     return fetch('/auth/profile', {
         method: 'GET',
         credentials: 'include'
-    }).then(response => response.ok).catch(() => false);
+    }).then(response => {
+        // Silently handle 401 responses without logging to console
+        return response.ok;
+    }).catch(() => false);
 }
 
 // Update navigation based on authentication state
@@ -63,7 +66,7 @@ async function updateNavigation() {
             <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Home</a>
             <a href="/dashboard" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
             <a href="/keys" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">API Keys</a>
-            <a href="/analytics" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Analytics</a>
+            <a href="/documentation" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Documentation</a>
             <a href="/profile" class="text-gray-700 dark:text-gray-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Profile</a>
             <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium ml-4">Logout</button>
         `;
@@ -72,7 +75,7 @@ async function updateNavigation() {
             <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Home</a>
             <a href="/dashboard" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
             <a href="/keys" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">API Keys</a>
-            <a href="/analytics" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Analytics</a>
+            <a href="/documentation" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Documentation</a>
             <a href="/profile" class="text-gray-700 dark:text-gray-300 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">Profile</a>
             <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium mt-2">Logout</button>
         `;

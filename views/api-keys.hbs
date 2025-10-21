@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <!-- Page Header -->
-                <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">API Keys</h1>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your API keys and access tokens</p>
-                    </div>
-                    <button id="generateKeyBtn" class="mt-4 sm:mt-0 flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-medium">
-                        <span class="material-symbols-outlined text-lg">add</span>
-                        Generate New Key
-                    </button>
-                </div>  <meta charset="utf-8"/>
+            
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>API Keys - API Rate Limiter</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -192,7 +181,6 @@
 
     <script>
         let apiKeys = [];
-        let authToken = localStorage.getItem('authToken');
 
         // Show alert function
         function showAlert(type, message) {
@@ -284,10 +272,8 @@
         // Load API keys
         async function loadApiKeys() {
             try {
-                const response = await fetch('/api-keys', {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                const response = await fetch('/keys/api/list', {
+                    credentials: 'include' // Include cookies in request
                 });
                 
                 if (response.ok) {
@@ -315,12 +301,12 @@
             spinner.classList.remove('hidden');
             
             try {
-                const response = await fetch('/api-keys/generate', {
+                const response = await fetch('/keys/api/generate', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: 'include' // Include cookies in request
                 });
                 
                 const result = await response.json();
@@ -349,11 +335,9 @@
             }
             
             try {
-                const response = await fetch(`/api-keys/revoke/${keyId}`, {
+                const response = await fetch(`/keys/api/revoke/${keyId}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                    credentials: 'include' // Include cookies in request
                 });
                 
                 if (response.ok) {
@@ -403,10 +387,6 @@
 
         // Load API keys on page load
         document.addEventListener('DOMContentLoaded', () => {
-            if (!authToken) {
-                window.location.href = '/auth/login';
-                return;
-            }
             loadApiKeys();
         });
     </script>

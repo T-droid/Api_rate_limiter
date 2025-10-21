@@ -57,47 +57,40 @@
   </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
-  <div class="relative min-h-screen" x-data="{ sidebarOpen: false }">
-    <header class="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
-      <div class="flex items-center justify-between p-4">
-        <div class="flex-1"></div>
-        <h1 class="flex-1 text-lg font-bold text-center text-slate-900 dark:text-white">API Rate Limiter</h1>
-        <div class="flex items-center justify-end flex-1">
-          <button @click="sidebarOpen = true" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary">
-            <span class="material-symbols-outlined">menu</span>
-          </button>
-        </div>
-      </div>
-    </header>
-    <div @click="sidebarOpen = false" class="fixed inset-0 z-50 bg-black/50" x-show="sidebarOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-end="opacity-100" x-transition:enter-start="opacity-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-end="opacity-0" x-transition:leave-start="opacity-100"></div>
-    <aside class="fixed top-0 left-0 z-50 w-4/5 h-full max-w-sm p-6 overflow-y-auto bg-background-light dark:bg-background-dark" x-show="sidebarOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-end="translate-x-0" x-transition:enter-start="-translate-x-full" x-transition:leave="transition ease-in duration-200" x-transition:leave-end="-translate-x-full" x-transition:leave-start="translate-x-0">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Menu</h2>
-        <button @click="sidebarOpen = false" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      </div>
-      <nav>
-        <ul class="space-y-2">
-          <li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">Home</a></li>
-          <li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">Dashboard</a></li>
-          <li><a class="flex items-center gap-3 p-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">API Keys</a></li>
-          <li><a class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary font-bold" href="#">Docs</a></li>
-        </ul>
-      </nav>
-    </aside>
+  <div class="relative min-h-screen">
+    {{> header}}
     <main class="p-4">
       <div class="space-y-8">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Documentation</h2>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">API Documentation</h2>
+          <p class="text-slate-600 dark:text-slate-400 mb-6">Welcome to the API Rate Limiter documentation. This service provides intelligent rate limiting for your APIs with real-time monitoring and analytics.</p>
           <div class="space-y-3">
+            <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
+              <summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+                <span>Getting Started</span>
+                <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+              </summary>
+              <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+                <p class="mb-3">To get started with our API Rate Limiter service:</p>
+                <ol class="list-decimal list-inside space-y-2">
+                  <li>Create an account and log in to your dashboard</li>
+                  <li>Generate your first API key with custom rate limits</li>
+                  <li>Include the API key in your requests using the X-API-Key header</li>
+                  <li>Monitor your usage and analytics in real-time</li>
+                </ol>
+              </div>
+            </details>
             <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
               <summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
                 <span>Authentication</span>
                 <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
               </summary>
               <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
-                <p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+                <p class="mb-3">All API requests must include a valid API key in the request headers:</p>
+                <div class="bg-slate-200 dark:bg-slate-700 p-3 rounded-md font-mono text-sm mb-3">
+                  X-API-Key: your_api_key_here
+                </div>
+                <p>API keys can be generated and managed from your dashboard. Each key has configurable rate limits and can be revoked at any time.</p>
               </div>
             </details>
             <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50" open="">
@@ -106,7 +99,22 @@
                 <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
               </summary>
               <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
-                <p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+                <p class="mb-3">Our API employs intelligent rate limiting to ensure fair usage and prevent abuse. Rate limits are enforced per API key and can be customized based on your needs.</p>
+                <div class="space-y-3">
+                  <div>
+                    <h4 class="font-medium text-slate-900 dark:text-white mb-1">Rate Limit Headers</h4>
+                    <p class="mb-2">Every response includes rate limit information:</p>
+                    <div class="bg-slate-200 dark:bg-slate-700 p-3 rounded-md font-mono text-sm">
+                      X-RateLimit-Limit: 1000<br/>
+                      X-RateLimit-Remaining: 999<br/>
+                      X-RateLimit-Reset: 1640995200
+                    </div>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-slate-900 dark:text-white mb-1">Rate Limit Exceeded</h4>
+                    <p>When rate limits are exceeded, the API returns a 429 status code with retry information.</p>
+                  </div>
+                </div>
               </div>
             </details>
             <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
@@ -115,105 +123,553 @@
                 <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
               </summary>
               <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
-                <p>Our API employs rate limiting to ensure fair usage and prevent abuse. Each API key has a specific rate limit, which is the maximum number of requests allowed within a given time period. Exceeding this limit will result in a 429 Too Many Requests error. Please refer to your API key's documentation for the specific rate limit details.</p>
+                <p class="mb-3">The API uses conventional HTTP response codes to indicate success or failure:</p>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-3">
+                    <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-sm font-mono">200</span>
+                    <span>Success - Request completed successfully</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 px-2 py-1 rounded text-sm font-mono">401</span>
+                    <span>Unauthorized - Invalid or missing API key</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-2 py-1 rounded text-sm font-mono">429</span>
+                    <span>Too Many Requests - Rate limit exceeded</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-2 py-1 rounded text-sm font-mono">500</span>
+                    <span>Internal Server Error - Something went wrong</span>
+                  </div>
+                </div>
               </div>
             </details>
           </div>
         </div>
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Endpoints</h2>
+        {{!-- <div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">API Endpoints</h2>
           <div class="space-y-3">
             <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50" open="">
               <summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
-                <span>User Management</span>
+                <span>API Key Management</span>
                 <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
               </summary>
               <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
-                <p>This section covers endpoints related to user accounts, including registration, login, and profile management.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded text-sm font-mono">GET</span>
+                      <code class="font-mono">/api/keys</code>
+                    </div>
+                    <p>Retrieve all API keys for the authenticated user</p>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-sm font-mono">POST</span>
+                      <code class="font-mono">/api/keys</code>
+                    </div>
+                    <p>Create a new API key with custom rate limits</p>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-2 py-1 rounded text-sm font-mono">DELETE</span>
+                      <code class="font-mono">/api/keys/:id</code>
+                    </div>
+                    <p>Revoke an API key</p>
+                  </div>
+                </div>
               </div>
             </details>
             <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
               <summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
-                <span>Data Retrieval</span>
+                <span>Rate Limit Status</span>
                 <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
               </summary>
               <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
-                <p>This section covers endpoints related to user accounts, including registration, login, and profile management.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded text-sm font-mono">GET</span>
+                      <code class="font-mono">/api/rate-limit/status</code>
+                    </div>
+                    <p>Check current rate limit status for your API key</p>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded text-sm font-mono">GET</span>
+                      <code class="font-mono">/api/analytics</code>
+                    </div>
+                    <p>Retrieve usage analytics and statistics</p>
+                  </div>
+                </div>
+              </div>
+            </details>
+            <details class="group rounded-lg bg-slate-100 dark:bg-slate-800/50">
+              <summary class="flex items-center justify-between p-4 font-medium cursor-pointer text-slate-900 dark:text-white">
+                <span>Protected Endpoints</span>
+                <span class="transition-transform duration-200 group-open:rotate-180 material-symbols-outlined">expand_more</span>
+              </summary>
+              <div class="p-4 pt-0 text-slate-600 dark:text-slate-400">
+                <p class="mb-3">Any endpoint protected by our rate limiter will:</p>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>Validate your API key</li>
+                  <li>Check against your rate limits</li>
+                  <li>Track usage for analytics</li>
+                  <li>Return appropriate rate limit headers</li>
+                </ul>
               </div>
             </details>
           </div>
-        </div>
+        </div> --}}
         <div>
           <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Code Examples</h2>
           <div class="border-b border-slate-200 dark:border-slate-800">
             <nav class="flex -mb-px space-x-6">
-              <a class="px-1 py-3 text-sm font-medium border-b-2 text-primary border-primary" href="#">Python</a>
-              <a class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50" href="#">JavaScript</a>
-              <a class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50" href="#">cURL</a>
+              <button id="tab-python" class="px-1 py-3 text-sm font-medium border-b-2 text-primary border-primary tab-button" data-tab="python">Python</button>
+              <button id="tab-javascript" class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50 tab-button" data-tab="javascript">JavaScript</button>
+              <button id="tab-curl" class="px-1 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent hover:text-primary hover:border-primary/50 tab-button" data-tab="curl">cURL</button>
             </nav>
           </div>
-          <div class="relative mt-4">
-            <pre class="p-4 overflow-x-auto text-sm bg-slate-100 dark:bg-slate-800/50 rounded-lg text-slate-100"><code class="language-python text-slate-700 dark:text-slate-300">import requests
-url = "https://api.example.com/users"
+          
+          <!-- Python Example -->
+          <div id="code-python" class="relative mt-4 code-example">
+            <pre class="p-4 overflow-x-auto text-sm bg-slate-100 dark:bg-slate-800/50 rounded-lg"><code class="language-python text-slate-700 dark:text-slate-300">import requests
+import time
+
+# Your API configuration
+api_key = "your_api_key_here"
+base_url = "https://your-api.com"
+
 headers = {
-    "Authorization": "Bearer YOUR_API_KEY"
+    "X-API-Key": api_key,
+    "Content-Type": "application/json"
 }
-response = requests.get(url, headers=headers)
-if response.status_code == 200:
-    print(response.json())
-elif response.status_code == 429:
-    print("Rate limit exceeded. Please try again later.")
-else:
-    print(f"Error: {response.status_code}")
-</code></pre>
-            <button class="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+
+# Make a request to a rate-limited endpoint
+def make_api_request(endpoint):
+    url = f"{base_url}{endpoint}"
+    response = requests.get(url, headers=headers)
+    
+    # Check rate limit headers
+    limit = response.headers.get('X-RateLimit-Limit')
+    remaining = response.headers.get('X-RateLimit-Remaining')
+    reset = response.headers.get('X-RateLimit-Reset')
+    
+    print(f"Rate Limit: {remaining}/{limit}")
+    
+    if response.status_code == 200:
+        return response.json()
+    elif response.status_code == 429:
+        retry_after = int(response.headers.get('Retry-After', 60))
+        print(f"Rate limit exceeded. Retry after {retry_after} seconds")
+        time.sleep(retry_after)
+        return make_api_request(endpoint)  # Retry
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+
+# Example usage
+data = make_api_request("/api/data")</code></pre>
+            <button class="copy-btn absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+              <span class="material-symbols-outlined text-sm">content_copy</span>
+              Copy
+            </button>
+          </div>
+
+          <!-- JavaScript Example -->
+          <div id="code-javascript" class="relative mt-4 code-example hidden">
+            <pre class="p-4 overflow-x-auto text-sm bg-slate-100 dark:bg-slate-800/50 rounded-lg"><code class="language-javascript text-slate-700 dark:text-slate-300">// Your API configuration
+const apiKey = 'your_api_key_here';
+const baseUrl = 'https://your-api.com';
+
+// Make a request to a rate-limited endpoint
+async function makeApiRequest(endpoint) {
+    const url = `${baseUrl}${endpoint}`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-API-Key': apiKey,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Check rate limit headers
+        const limit = response.headers.get('X-RateLimit-Limit');
+        const remaining = response.headers.get('X-RateLimit-Remaining');
+        const reset = response.headers.get('X-RateLimit-Reset');
+        
+        console.log(`Rate Limit: ${remaining}/${limit}`);
+
+        if (response.ok) {
+            return await response.json();
+        } else if (response.status === 429) {
+            const retryAfter = parseInt(response.headers.get('Retry-After') || '60');
+            console.log(`Rate limit exceeded. Retry after ${retryAfter} seconds`);
+            
+            // Wait and retry
+            await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+            return makeApiRequest(endpoint);
+        } else {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error('API request failed:', error);
+        return null;
+    }
+}
+
+// Example usage
+makeApiRequest('/api/data')
+    .then(data => console.log('Success:', data))
+    .catch(error => console.error('Error:', error));</code></pre>
+            <button class="copy-btn absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+              <span class="material-symbols-outlined text-sm">content_copy</span>
+              Copy
+            </button>
+          </div>
+
+          <!-- cURL Example -->
+          <div id="code-curl" class="relative mt-4 code-example hidden">
+            <pre class="p-4 overflow-x-auto text-sm bg-slate-100 dark:bg-slate-800/50 rounded-lg"><code class="language-bash text-slate-700 dark:text-slate-300"># Basic API request
+curl -X GET "https://your-api.com/api/data" \
+  -H "X-API-Key: your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -v
+
+# Check rate limit status
+curl -X GET "https://your-api.com/api/rate-limit/status" \
+  -H "X-API-Key: your_api_key_here" \
+  -H "Content-Type: application/json"
+
+# POST request with data
+curl -X POST "https://your-api.com/api/keys" \
+  -H "X-API-Key: your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My API Key",
+    "rateLimit": 1000,
+    "rateLimitWindow": "hour"
+  }'
+
+# Handle rate limiting with retry
+curl -X GET "https://your-api.com/api/data" \
+  -H "X-API-Key: your_api_key_here" \
+  -H "Content-Type: application/json" \
+  --retry 3 \
+  --retry-delay 5 \
+  --retry-max-time 60
+
+# View response headers (including rate limit info)
+curl -X GET "https://your-api.com/api/data" \
+  -H "X-API-Key: your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -I</code></pre>
+            <button class="copy-btn absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
               <span class="material-symbols-outlined text-sm">content_copy</span>
               Copy
             </button>
           </div>
         </div>
         <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">Try It Out</h2>
-          <div class="space-y-4">
-            <div>
-              <label class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300" for="api-key">API Key</label>
-              <input class="w-full px-4 py-2 border rounded-lg bg-background-light dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 focus:ring-primary focus:border-primary text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" id="api-key" placeholder="Enter API Key" type="text"/>
+          <div class="bg-gradient-to-br from-primary/5 via-blue-50/50 to-indigo-50/30 dark:from-primary/10 dark:via-blue-900/20 dark:to-indigo-900/10 rounded-2xl p-8 border border-blue-100/50 dark:border-blue-800/30">
+            <div class="text-center mb-8">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-2xl mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">api</span>
+              </div>
+              <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">Try It Live</h2>
+              <p class="text-slate-600 dark:text-slate-400 text-lg">Test your API key and see real-time rate limiting in action</p>
             </div>
-            <div>
-              <label class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300" for="endpoint-url">Endpoint URL</label>
-              <input class="w-full px-4 py-2 border rounded-lg bg-background-light dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 focus:ring-primary focus:border-primary text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" id="endpoint-url" placeholder="Endpoint URL" type="text"/>
-            </div>
-            <div class="flex justify-end">
-              <button class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg shadow-sm bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                Send Request
-              </button>
+
+            <div class="max-w-2xl mx-auto space-y-6">
+              <!-- API Key Input -->
+              <div class="relative">
+                <label class="block mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300" for="api-key">
+                  <span class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">key</span>
+                    Your API Key
+                  </span>
+                </label>
+                <div class="relative">
+                  <input 
+                    class="w-full px-6 py-4 text-lg border-2 rounded-xl bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all duration-200 pr-12" 
+                    id="api-key" 
+                    placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" 
+                    type="password"
+                  />
+                  <button 
+                    id="toggle-visibility" 
+                    class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined text-xl" id="visibility-icon">visibility</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Test Button -->
+              <div class="text-center">
+                <button 
+                  id="test-api-btn" 
+                  class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-300 rounded-xl bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 focus:outline-none focus:ring-4 focus:ring-primary/20 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  <span class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-xl transition-transform group-hover:rotate-12">flash_on</span>
+                    <span id="btn-text">Test API Key</span>
+                  </span>
+                  <div class="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </button>
+              </div>
+
+              <!-- Stats Display -->
+              <div id="stats-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 opacity-0 transform translate-y-4 transition-all duration-500">
+                <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-4 border border-slate-200/50 dark:border-slate-700/50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                      <span class="material-symbols-outlined text-green-600 dark:text-green-400">check_circle</span>
+                    </div>
+                    <div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">Status</p>
+                      <p class="font-semibold text-slate-900 dark:text-white" id="status-display">Ready</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-4 border border-slate-200/50 dark:border-slate-700/50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                      <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">speed</span>
+                    </div>
+                    <div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">Rate Limit</p>
+                      <p class="font-semibold text-slate-900 dark:text-white" id="rate-limit-display">-/-</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-4 border border-slate-200/50 dark:border-slate-700/50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                      <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">schedule</span>
+                    </div>
+                    <div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">Response Time</p>
+                      <p class="font-semibold text-slate-900 dark:text-white" id="response-time-display">-</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Response Display -->
+              <div id="api-response" class="hidden mt-6 transform translate-y-4 transition-all duration-500">
+                <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden">
+                  <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200/50 dark:border-slate-700/50">
+                    <div class="flex items-center gap-3">
+                      <span class="material-symbols-outlined text-slate-600 dark:text-slate-400">code</span>
+                      <h3 class="font-semibold text-slate-900 dark:text-white">API Response</h3>
+                    </div>
+                    <button 
+                      id="copy-response" 
+                      class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <span class="material-symbols-outlined text-sm">content_copy</span>
+                      Copy
+                    </button>
+                  </div>
+                  <pre class="p-6 overflow-x-auto text-sm bg-slate-50/50 dark:bg-slate-900/50"><code id="response-content" class="text-slate-700 dark:text-slate-300"></code></pre>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </main>
-    <footer class="sticky bottom-0 z-40 bg-background-light dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-      <nav class="grid grid-cols-4 gap-2 px-4 py-2">
-        <a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
-          <span class="material-symbols-outlined">home</span>
-          <span>Home</span>
-        </a>
-        <a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
-          <span class="material-symbols-outlined">monitoring</span>
-          <span>Dashboard</span>
-        </a>
-        <a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium rounded-lg text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#">
-          <span class="material-symbols-outlined">key</span>
-          <span>API Keys</span>
-        </a>
-        <a class="flex flex-col items-center justify-center gap-1 py-1 text-xs font-medium text-white rounded-lg bg-primary" href="#">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">description</span>
-          <span>Docs</span>
-        </a>
-      </nav>
-    </footer>
   </div>
   <script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script>
+    // Documentation API Tester functionality
+    document.addEventListener('DOMContentLoaded', async () => {
+      const testButton = document.getElementById('test-api-btn');
+      const apiResponse = document.getElementById('api-response');
+      const responseContent = document.getElementById('response-content');
+      const rateLimitDisplay = document.getElementById('rate-limit-display');
+      const statusDisplay = document.getElementById('status-display');
+      const responseTimeDisplay = document.getElementById('response-time-display');
+      const apiKeyInput = document.getElementById('api-key');
+      const btnText = document.getElementById('btn-text');
+      const statsContainer = document.getElementById('stats-container');
+      const toggleVisibility = document.getElementById('toggle-visibility');
+      const visibilityIcon = document.getElementById('visibility-icon');
+      const copyResponse = document.getElementById('copy-response');
+
+      // Password visibility toggle
+      toggleVisibility.addEventListener('click', () => {
+        const isPassword = apiKeyInput.type === 'password';
+        apiKeyInput.type = isPassword ? 'text' : 'password';
+        visibilityIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+      });
+
+      // Copy response functionality
+      copyResponse.addEventListener('click', () => {
+        if (responseContent.textContent) {
+          navigator.clipboard.writeText(responseContent.textContent.trim()).then(() => {
+            const originalText = copyResponse.innerHTML;
+            copyResponse.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Copied!';
+            setTimeout(() => {
+              copyResponse.innerHTML = originalText;
+            }, 2000);
+          });
+        }
+      });
+
+      // Handle test button click
+      testButton.addEventListener('click', async () => {
+        const apiKey = apiKeyInput.value.trim();
+
+        if (!apiKey) {
+          showError('Please enter your API key to continue');
+          return;
+        }
+
+        // Validate API key format and length
+        if (!apiKey.startsWith('sk-')) {
+          showError('Invalid API key format. API keys must start with "sk-"');
+          return;
+        }
+
+        if (apiKey.length !== 51) {
+          showError(`Invalid API key length. Expected 51 characters, got ${apiKey.length}`);
+          return;
+        }
+
+        // Show loading state
+        testButton.disabled = true;
+        btnText.textContent = 'Testing...';
+        statusDisplay.textContent = 'Testing';
+        apiResponse.classList.add('hidden');
+        
+        // Show stats container with animation
+        statsContainer.classList.remove('opacity-0', 'translate-y-4');
+        statsContainer.classList.add('opacity-100', 'translate-y-0');
+
+        const startTime = Date.now();
+
+        try {
+          // Make request to the documentation featured endpoint
+          const response = await fetch('/documentation/featured', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': apiKey
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              testMode: true
+            })
+          });
+
+          const endTime = Date.now();
+          const responseTime = endTime - startTime;
+          responseTimeDisplay.textContent = `${responseTime}ms`;
+
+          // Update rate limit display
+          const limit = response.headers.get('X-RateLimit-Limit');
+          const remaining = response.headers.get('X-RateLimit-Remaining');
+          if (limit && remaining) {
+            rateLimitDisplay.textContent = `${remaining}/${limit}`;
+          }
+
+          const result = await response.json();
+          
+          if (response.ok) {
+            statusDisplay.textContent = 'Success';
+            showResponse(JSON.stringify(result, null, 2), 'success');
+          } else {
+            statusDisplay.textContent = 'Error';
+            showResponse(JSON.stringify(result, null, 2), 'error');
+          }
+        } catch (error) {
+          statusDisplay.textContent = 'Failed';
+          responseTimeDisplay.textContent = 'Timeout';
+          showResponse(`Network Error: ${error.message}`, 'error');
+        } finally {
+          testButton.disabled = false;
+          btnText.textContent = 'Test API Key';
+        }
+      });
+
+      function showError(message) {
+        statusDisplay.textContent = 'Error';
+        showResponse(message, 'error');
+        statsContainer.classList.remove('opacity-0', 'translate-y-4');
+        statsContainer.classList.add('opacity-100', 'translate-y-0');
+      }
+
+      function showResponse(content, type) {
+        responseContent.textContent = content;
+        responseContent.className = `text-slate-700 dark:text-slate-300`;
+        if (type === 'error') {
+          responseContent.className += ' text-red-600 dark:text-red-400';
+        } else if (type === 'success') {
+          responseContent.className += ' text-green-600 dark:text-green-400';
+        }
+        
+        // Show response with animation
+        apiResponse.classList.remove('hidden');
+        setTimeout(() => {
+          apiResponse.classList.remove('translate-y-4');
+          apiResponse.classList.add('translate-y-0');
+        }, 50);
+      }
+
+      // Tab switching functionality for code examples
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const codeExamples = document.querySelectorAll('.code-example');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.dataset.tab;
+          
+          // Update button states
+          tabButtons.forEach(btn => {
+            btn.classList.remove('text-primary', 'border-primary');
+            btn.classList.add('text-slate-500', 'dark:text-slate-400', 'border-transparent');
+          });
+          
+          button.classList.remove('text-slate-500', 'dark:text-slate-400', 'border-transparent');
+          button.classList.add('text-primary', 'border-primary');
+          
+          // Show/hide code examples
+          codeExamples.forEach(example => {
+            example.classList.add('hidden');
+          });
+          
+          const targetExample = document.getElementById(`code-${targetTab}`);
+          if (targetExample) {
+            targetExample.classList.remove('hidden');
+          }
+        });
+      });
+
+      // Copy button functionality for code examples
+      document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const codeBlock = button.parentElement.querySelector('code');
+          if (codeBlock) {
+            navigator.clipboard.writeText(codeBlock.textContent.trim()).then(() => {
+              const originalText = button.innerHTML;
+              button.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Copied';
+              setTimeout(() => {
+                button.innerHTML = originalText;
+              }, 2000);
+            });
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>

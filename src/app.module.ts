@@ -6,16 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
-import { AuthController } from './auth/auth.contoller';
-import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { KeysModule } from './keys/keys.module';
-import { FeaturedController } from './featured/featured.controller';
-import { FeaturedModule } from './featured/featured.module';
 import { RateLimiterModule } from './rate-limiter/rate-limiter.module';
-import { AnalyticsModule } from './analytics/analytics.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { DocumentationModule } from './documentation/documentation.module';
 
 @Module({
   imports: [
@@ -41,12 +36,11 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UserModule,
     AuthModule,
     KeysModule,
-    FeaturedModule,
     RateLimiterModule,
-    AnalyticsModule,
-    DashboardModule
+    DashboardModule,
+    DocumentationModule
   ],
-  controllers: [AppController, FeaturedController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

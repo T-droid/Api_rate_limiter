@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <!-- Page Header -->
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Profile</h1>
-                    <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your account settings and preferences</p>
-                </div>  <meta charset="utf-8"/>
+    <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Profile - API Rate Limiter</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -202,13 +197,7 @@
     </div>
 
     <script>
-        let authToken = localStorage.getItem('authToken');
         let userData = {};
-
-        // Check authentication
-        if (!authToken) {
-            window.location.href = '/auth/login';
-        }
 
         // Show alert function
         function showAlert(type, message) {
@@ -233,9 +222,7 @@
         async function loadProfileData() {
             try {
                 const response = await fetch('/auth/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                    credentials: 'include'
                 });
                 
                 if (response.ok) {
@@ -263,8 +250,8 @@
         async function loadStatistics() {
             try {
                 // Load API keys count
-                const keysResponse = await fetch('/api-keys', {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
+                const keysResponse = await fetch('/keys/api/list', {
+                    credentials: 'include'
                 });
                 
                 if (keysResponse.ok) {
@@ -304,9 +291,9 @@
                 const response = await fetch('/auth/profile', {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(formData)
                 });
                 
