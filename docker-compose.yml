@@ -1,0 +1,95 @@
+services:
+  # Your NestJS Application
+  api-rate-limiter:
+    build: .
+    container_name: api-rate-limiter-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    environment:
+      # Override specific variables if needed
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network
+    volumes:
+      # Optional: mount logs directory if you have logging
+      - ./logs:/usr/src/app/logs
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: api-rate-limiter-mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"  # Use different external port to avoid conflict
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_DATABASE=api_rate_limiter
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - app-network
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: api-rate-limiter-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"  # Use different external port to avoid conflict
+    command: redis-server --appendonly yes --requirepass redis123
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  # Optional: MongoDB Admin Interface
+  mongo-express:
+    image: mongo-express:latest
+    container_name: api-rate-limiter-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin123@mongodb:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  # Optional: Redis Admin Interface
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: api-rate-limiter-redis-commander
+    restart: unless-stopped
+    ports:
+      - "8082:8081"
+    environment:
+      - REDIS_HOSTS=redis:redis:6379:0:redis123
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+# Persistent volumes for data
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+# Network for container communication
+networks:
+  app-network:
+    driver: bridge

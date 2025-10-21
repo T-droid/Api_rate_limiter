@@ -15,22 +15,46 @@ import { DocumentationModule } from './documentation/documentation.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
+      envFilePath: ['.env.docker', '.env.production', '.env']
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI')
+        uri: configService.get<string>('MONGODB_URI') || configService.get<string>('MONGO_URI')
       }) as any,
       inject: [ConfigService]
     }),
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
-        url: configService.get<string>('REDIS_URI'),
-        ttl: 60 * 1000, // 60 seconds default TTL
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const redisConfig: any = {
+          store: redisStore,
+          ttl: 60 * 1000, // 60 seconds default TTL
+        };
+
+        // Check if REDIS_URI is provided (for backward compatibility)
+        const redisUri = configService.get<string>('REDIS_URI');
+        if (redisUri) {
+          redisConfig.url = redisUri;
+        } else {
+          // Use individual Redis configuration for production
+          const redisHost = configService.get<string>('REDIS_HOST', 'localhost');
+          const redisPort = configService.get<number>('REDIS_PORT', 6379);
+          const redisPassword = configService.get<string>('REDIS_PASSWORD');
+          
+          redisConfig.socket = {
+            host: redisHost,
+            port: redisPort,
+          };
+          
+          if (redisPassword) {
+            redisConfig.password = redisPassword;
+          }
+        }
+
+        return redisConfig;
+      },
       inject: [ConfigService],
     }),
     UserModule,

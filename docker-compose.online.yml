@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Your API Rate Limiter from Docker Hub
+  api-rate-limiter:
+    image: tindii/api-rate-limiter:latest  # Using your published image
+    container_name: online-api-rate-limiter
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # MongoDB connection
+      - MONGODB_URI=mongodb://mongodb:27017/api_rate_limiter
+      # Redis connection
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # Other environment variables
+      - NODE_ENV=production
+      - JWT_SECRET=online-test-jwt-secret-change-this
+      - RATE_LIMIT_BUCKET_CAPACITY=10
+      - RATE_LIMIT_FILL_RATE=1
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: online-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_DATABASE=api_rate_limiter
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: online-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
