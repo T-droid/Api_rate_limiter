@@ -1,122 +1,123 @@
 <!DOCTYPE html>
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>API Rate Limiter</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#0c5fe4",
-              "background-light": "#f5f7f8",
-              "background-dark": "#101722",
-            },
-            fontFamily: {
-              display: ["Inter"],
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>API Rate Limiter</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0c5fe4",
+            "background-light": "#f5f7f8",
+            "background-dark": "#101722",
+          },
+          fontFamily: {
+            display: ["Inter"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
           },
         },
-      };
-    </script>
-<style>
+      },
+    };
+  </script>
+  <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
-  </head>
+</head>
 <body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200">
-<div class="flex flex-col min-h-screen">
-{{> header}}
-<main class="flex-grow">
-<section class="relative flex flex-col items-center justify-center min-h-[60vh] p-6 text-center bg-cover bg-center" style='background-image: linear-gradient(rgba(16, 23, 34, 0.7) 0%, rgba(16, 23, 34, 0.9) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBp09_lxIu6xBpQDyglcgLmmZZzptycyo8pqn0aV9bD2B7z_mNvUs5dXHbdQMvxZQD3jjR116NTCqtILCG3DrYp_NyYg39qjrM7VxeBOcgj_qKhwoCAzKP6TeCjrSENRf481udqRuB1h-ArHuGc5B1UgQzjdVSapbi4lwazz0rlxleDgJ44KniG8XOG2AlTMpN_6RTG1RP1M4IxdXRzwu61vfPKb2yo-QmpvhwR_-GIu8opaF_ntgwbKrjXec_2yw-xv2IYjlCMpfI");'>
-<div class="max-w-3xl">
-<h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl md:text-6xl">
-              API Rate Limiter
-            </h1>
-<p class="mt-4 text-lg text-gray-300">
-              A robust and scalable solution for managing API request rates,
-              ensuring fair usage and system stability.
+  <div class="flex flex-col min-h-screen">
+    {{> header}}
+    <main class="flex-grow">
+      <section class="relative flex flex-col items-center justify-center min-h-[60vh] p-6 text-center bg-cover bg-center" style='background-image: linear-gradient(rgba(16, 23, 34, 0.7) 0%, rgba(16, 23, 34, 0.9) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBp09_lxIu6xBpQDyglcgLmmZZzptycyo8pqn0aV9bD2B7z_mNvUs5dXHbdQMvxZQD3jjR116NTCqtILCG3DrYp_NyYg39qjrM7VxeBOcgj_qKhwoCAzKP6TeCjrSENRf481udqRuB1h-ArHuGc5B1UgQzjdVSapbi4lwazz0rlxleDgJ44KniG8XOG2AlTMpN_6RTG1RP1M4IxdXRzwu61vfPKb2yo-QmpvhwR_-GIu8opaF_ntgwbKrjXec_2yw-xv2IYjlCMpfI");'>
+        <div class="max-w-3xl">
+          <h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl md:text-6xl">
+            API Rate Limiter
+          </h1>
+          <p class="mt-4 text-lg text-gray-300">
+            A robust and scalable solution for managing API request rates,
+            ensuring fair usage and system stability.
+          </p>
+          <div class="flex flex-col gap-4 mt-8 sm:flex-row sm:justify-center">
+            <a href="/auth/register" class="px-8 py-3 font-bold text-white rounded-full bg-primary hover:bg-primary/90 text-center">
+              Get Started
+            </a>
+            <a href="#features" class="px-8 py-3 font-bold bg-white/10 text-white rounded-full hover:bg-white/20 backdrop-blur-sm text-center">
+              View Features
+            </a>
+          </div>
+        </div>
+      </section>
+      <section id="features" class="px-4 py-16 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Key Features
+            </h2>
+            <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+              Explore the core functionalities that make our API rate limiter
+              a powerful tool for managing API traffic.
             </p>
-<div class="flex flex-col gap-4 mt-8 sm:flex-row sm:justify-center">
-<a href="/auth/register" class="px-8 py-3 font-bold text-white rounded-full bg-primary hover:bg-primary/90 text-center">
-                Get Started
-              </a>
-<a href="#features" class="px-8 py-3 font-bold bg-white/10 text-white rounded-full hover:bg-white/20 backdrop-blur-sm text-center">
-                View Features
-              </a>
-</div>
-</div>
-</section>
-<section id="features" class="px-4 py-16 sm:px-6 lg:px-8">
-<div class="max-w-4xl mx-auto">
-<div class="text-center">
-<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Key Features
-              </h2>
-<p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
-                Explore the core functionalities that make our API rate limiter
-                a powerful tool for managing API traffic.
+          </div>
+          <div class="grid gap-6 mt-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
+              <div class="text-primary">
+                <svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M233,161.75a8,8,0,0,0-10,0c-.94.76-23,18.68-23,42.25a28,28,0,0,0,56,0C256,180.43,233.94,162.51,233,161.75ZM228,216a12,12,0,0,1-12-12c0-10.18,7-19.53,12-24.93,5,5.42,12,14.8,12,24.93A12,12,0,0,1,228,216Zm1.66-98.17L122.17,10.34a8,8,0,0,0-11.31,0L70.25,51,45.65,26.34A8,8,0,0,0,34.34,37.66l24.6,24.6L15,106.17a24,24,0,0,0,0,33.94L99.89,225a24,24,0,0,0,33.94,0l95.83-95.83A8,8,0,0,0,229.66,117.83ZM122.51,213.66a8,8,0,0,1-11.31,0L26.34,128.8a8,8,0,0,1,0-11.31L70.25,73.57l29.12,29.12a28,28,0,1,0,11.31-11.32L81.57,62.26l35-34.95,96.17,96.17ZM124,104a12,12,0,1,1-8.49,3.5A12,12,0,0,1,124,104Z"></path>
+                </svg>
+              </div>
+              <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
+                Token Bucket Algorithm
+              </h3>
+              <p class="mt-2 text-gray-600 dark:text-gray-400">
+                Implements the token bucket algorithm for precise rate limiting.
               </p>
-</div>
-<div class="grid gap-6 mt-12 sm:grid-cols-2 lg:grid-cols-3">
-<div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
-<div class="text-primary">
-<svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
-<path d="M233,161.75a8,8,0,0,0-10,0c-.94.76-23,18.68-23,42.25a28,28,0,0,0,56,0C256,180.43,233.94,162.51,233,161.75ZM228,216a12,12,0,0,1-12-12c0-10.18,7-19.53,12-24.93,5,5.42,12,14.8,12,24.93A12,12,0,0,1,228,216Zm1.66-98.17L122.17,10.34a8,8,0,0,0-11.31,0L70.25,51,45.65,26.34A8,8,0,0,0,34.34,37.66l24.6,24.6L15,106.17a24,24,0,0,0,0,33.94L99.89,225a24,24,0,0,0,33.94,0l95.83-95.83A8,8,0,0,0,229.66,117.83ZM122.51,213.66a8,8,0,0,1-11.31,0L26.34,128.8a8,8,0,0,1,0-11.31L70.25,73.57l29.12,29.12a28,28,0,1,0,11.31-11.32L81.57,62.26l35-34.95,96.17,96.17ZM124,104a12,12,0,1,1-8.49,3.5A12,12,0,0,1,124,104Z"></path>
-</svg>
-</div>
-<h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
-                  Token Bucket Algorithm
-                </h3>
-<p class="mt-2 text-gray-600 dark:text-gray-400">
-                  Implements the token bucket algorithm for precise rate
-                  limiting.
-                </p>
-</div>
-<div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
-<div class="text-primary">
-<svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
-<path d="M128,24C74.17,24,32,48.6,32,80v96c0,31.4,42.17,56,96,56s96-24.6,96-56V80C224,48.6,181.83,24,128,24Zm80,104c0,9.62-7.88,19.43-21.61,26.92C170.93,163.35,150.19,168,128,168s-42.93-4.65-58.39-13.08C55.88,147.43,48,137.62,48,128V111.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64ZM69.61,53.08C85.07,44.65,105.81,40,128,40s42.93,4.65,58.39,13.08C200.12,60.57,208,70.38,208,80s-7.88,19.43-21.61,26.92C170.93,115.35,150.19,120,128,120s-42.93-4.65-58.39-13.08C55.88,99.43,48,89.62,48,80S55.88,60.57,69.61,53.08ZM186.39,202.92C170.93,211.35,150.19,216,128,216s-42.93-4.65-58.39-13.08C55.88,195.43,48,185.62,48,176V159.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64V176C208,185.62,200.12,195.43,186.39,202.92Z"></path>
-</svg>
-</div>
-<h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
-                  Redis-Backed Caching
-                </h3>
-<p class="mt-2 text-gray-600 dark:text-gray-400">
-                  Utilizes Redis for fast and efficient caching of rate limits.
-                </p>
-</div>
-<div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
-<div class="text-primary">
-<svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
-<path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
-</svg>
-</div>
-<h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
-                  MongoDB User Management
-                </h3>
-<p class="mt-2 text-gray-600 dark:text-gray-400">
-                  Manages user accounts and API keys with MongoDB.
-                </p>
-</div>
-</div>
-</div>
-</section>
-</main>
-</div>
+            </div>
+            <div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
+              <div class="text-primary">
+                <svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M128,24C74.17,24,32,48.6,32,80v96c0,31.4,42.17,56,96,56s96-24.6,96-56V80C224,48.6,181.83,24,128,24Zm80,104c0,9.62-7.88,19.43-21.61,26.92C170.93,163.35,150.19,168,128,168s-42.93-4.65-58.39-13.08C55.88,147.43,48,137.62,48,128V111.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64ZM69.61,53.08C85.07,44.65,105.81,40,128,40s42.93,4.65,58.39,13.08C200.12,60.57,208,70.38,208,80s-7.88,19.43-21.61,26.92C170.93,115.35,150.19,120,128,120s-42.93-4.65-58.39-13.08C55.88,99.43,48,89.62,48,80S55.88,60.57,69.61,53.08ZM186.39,202.92C170.93,211.35,150.19,216,128,216s-42.93-4.65-58.39-13.08C55.88,195.43,48,185.62,48,176V159.36c17.06,15,46.23,24.64,80,24.64s62.94-9.68,80-24.64V176C208,185.62,200.12,195.43,186.39,202.92Z"></path>
+                </svg>
+              </div>
+              <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
+                Redis-Backed Caching
+              </h3>
+              <p class="mt-2 text-gray-600 dark:text-gray-400">
+                Utilizes Redis for fast and efficient caching of rate limits.
+              </p>
+            </div>
+            <div class="flex flex-col p-6 transition-transform transform bg-background-light/50 dark:bg-background-dark/50 rounded-lg shadow-lg hover:scale-105">
+              <div class="text-primary">
+                <svg fill="currentColor" height="32px" viewBox="0 0 256 256" width="32px" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
+                </svg>
+              </div>
+              <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
+                MongoDB User Management
+              </h3>
+              <p class="mt-2 text-gray-600 dark:text-gray-400">
+                Manages user accounts and API keys with MongoDB.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-<script src="/js/navigation.js"></script>
+  <script src="/js/navigation.js"></script>
 
-</body></html>
+</body>
+</html>

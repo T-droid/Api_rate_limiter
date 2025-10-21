@@ -10,7 +10,7 @@ export class DashboardController {
     @UseGuards(AuthGuard)
     @Render('dashboard')
     async getDashboard(@Request() req) {
-        const dashboardData = await this.dashboardService.getDashboardData(req.user.id);
+        const dashboardData = await this.dashboardService.getDashboardData(req.user._id);
         
         return { 
             user: req.user,
@@ -23,7 +23,7 @@ export class DashboardController {
     @UseGuards(AuthGuard)
     async getDashboardData(@Request() req, @Res() res) {
         try {
-            const dashboardData = await this.dashboardService.getDashboardData(req.user.id);
+            const dashboardData = await this.dashboardService.getDashboardData(req.user._id);
             res.json(dashboardData);
         } catch (error) {
             console.error('Error getting dashboard data:', error);
@@ -35,7 +35,7 @@ export class DashboardController {
     @UseGuards(AuthGuard)
     async getRateLimitStatus(@Request() req, @Res() res) {
         try {
-            const rateLimitStatus = await this.dashboardService.getRateLimitStatus(req.user.id);
+            const rateLimitStatus = await this.dashboardService.getRateLimitStatus(req.user._id);
             res.json(rateLimitStatus);
         } catch (error) {
             console.error('Error getting rate limit status:', error);
