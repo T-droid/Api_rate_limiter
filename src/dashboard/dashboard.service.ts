@@ -8,9 +8,6 @@ import { Analytics, AnalyticsDocument } from 'src/rate-limiter/analytics.schema'
 
 @Injectable()
 export class DashboardService {
-    // private cache = new Map<string, { data: any; timestamp: number }>();
-    // private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
     constructor(
         private readonly rateLimiterService: RateLimiterService,
         private readonly keysService: KeysService,
@@ -22,31 +19,16 @@ export class DashboardService {
      * Get comprehensive dashboard data for a user
      */
     async getDashboardData(userId: string) {
-        try {
-            // Check cache first
-            // const cacheKey = `dashboard_${userId}`;
-            // const cached = this.cache.get(cacheKey);
-            
-            // if (cached && (Date.now() - cached.timestamp) < this.CACHE_TTL) {
-            //     return cached.data;
-            // }
-            
+        try {            
             // Get user's API keys first
             const userApiKeys = await this.apiKeyModel.find({ user: userId }).lean();
-            const userApiKeyIds = userApiKeys.map(key => key._id.toString());
             
             console.log(`Found ${userApiKeys.length} API keys for user`);
 
-            if (userApiKeyIds.length === 0) {
-                const defaultData = this.getDefaultDashboardData();
-                // this.cache.set(cacheKey, { data: defaultData, timestamp: Date.now() });
-                return defaultData;
-            }
-
-            // Use Promise.all to fetch analytics data in parallel but avoid N+1 queries
+            // Use Promise.all to fetch analytics data in parallel
             const [analyticsData, dailyData] = await Promise.all([
-                this.rateLimiterService.getUserAnalyticsSummary(userApiKeyIds, 7),
-                this.getOptimizedDailyAnalytics(userApiKeyIds, 7)
+                this.rateLimiterService.getUserAnalyticsSummary(userId, 7),
+                this.getOptimizedDailyAnalytics(userId, 7)
             ]);
 
             // Calculate additional metrics
@@ -71,7 +53,7 @@ export class DashboardService {
                 ...metrics,
                 
                 // Recent activity (last 24 hours)
-                recentActivity: await this.getRecentActivity(userApiKeyIds)
+                recentActivity: await this.getRecentActivity(userId)
             };
 
             // Cache the result
@@ -87,45 +69,24 @@ export class DashboardService {
     /**
      * Get optimized daily analytics using a single aggregation query
      */
-    private async getOptimizedDailyAnalytics(userApiKeyIds: string[], days: number = 7) {
+    private async getOptimizedDailyAnalytics(userId: string, days: number = 7) {
         try {
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
             startDate.setHours(0, 0, 0, 0);
 
-            // Use aggregation to get daily data for all API keys in one query
-            const dailyData = await this.analyticsModel.aggregate([
-                {
-                    $match: {
-                        apiKeyId: { $in: userApiKeyIds },
-                        date: { $gte: startDate }
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$date",
-                        totalCalls: { $sum: "$totalCalls" },
-                        successfulCalls: { $sum: "$successfulCalls" },
-                        failedCalls: { $sum: "$failedCalls" },
-                        rateLimitedCalls: { $sum: "$rateLimitedCalls" }
-                    }
-                },
-                {
-                    $sort: { _id: 1 }
-                },
-                {
-                    $project: {
-                        date: { $dateToString: { format: "%Y-%m-%d", date: "$_id" } },
-                        totalCalls: 1,
-                        successfulCalls: 1,
-                        failedCalls: 1,
-                        rateLimitedCalls: 1,
-                        _id: 0
-                    }
-                }
-            ]);
+            const dailyData = await this.analyticsModel.find({ 
+                userId, 
+                date: { $gte: startDate } 
+            }).sort({ date: 1 }).lean();
 
-            return dailyData;
+            return dailyData.map(record => ({
+                date: record.date.toISOString().split('T')[0],
+                totalCalls: record.totalCalls,
+                successfulCalls: record.successfulCalls,
+                failedCalls: record.failedCalls,
+                rateLimitedCalls: record.rateLimitedCalls
+            }));
         } catch (error) {
             console.error('Error getting optimized daily analytics:', error);
             return [];
@@ -222,7 +183,7 @@ export class DashboardService {
     /**
      * Get recent activity (placeholder for future implementation)
      */
-    private async getRecentActivity(userApiKeyIds: string[]) {
+    private async getRecentActivity(userId: string) {
         // This would typically fetch recent API calls from a logs collection
         // For now, return placeholder data with proper status text
         const statusTexts = {
@@ -277,9 +238,7 @@ export class DashboardService {
     async getRateLimitStatus(userId: string) {
         try {
             const userApiKeys = await this.apiKeyModel.find({ user: userId, active: true }).lean();
-            
-            // For now, return aggregated rate limit info
-            // This could be enhanced to show per-key rate limits
+
             const totalCapacity = userApiKeys.reduce((sum, key) => sum + (key.rateLimitCapacity || 60), 0);
             const usagePercentage = Math.min(75, Math.random() * 100); // Placeholder - replace with real data
 
@@ -299,18 +258,4 @@ export class DashboardService {
             };
         }
     }
-
-    /**
-     * Clear cache for a specific user or all users
-     */
-    // clearCache(userId?: string) {
-    //     if (userId) {
-    //         const cacheKey = `dashboard_${userId}`;
-    //         this.cache.delete(cacheKey);
-    //         console.log(`Cleared cache for user: ${userId}`);
-    //     } else {
-    //         this.cache.clear();
-    //         console.log('Cleared all dashboard cache');
-    //     }
-    // }
 }

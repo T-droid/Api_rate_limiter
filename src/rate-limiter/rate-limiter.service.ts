@@ -137,43 +137,37 @@ export class RateLimiterService {
     /**
      * Get overall analytics for a user (across all their API keys)
      */
-    async getUserAnalyticsSummary(userApiKeyIds: string[], days: number = 7) {
+    async getUserAnalyticsSummary(userId: string, days: number = 7) {
         try {
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
             startDate.setHours(0, 0, 0, 0);
-
-            const analytics = await this.analyticsModel.aggregate([
-                {
-                    $match: {
-                        apiKeyId: { $in: userApiKeyIds },
-                        date: { $gte: startDate }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        totalCalls: { $sum: "$totalCalls" },
-                        successfulCalls: { $sum: "$successfulCalls" },
-                        failedCalls: { $sum: "$failedCalls" },
-                        rateLimitedCalls: { $sum: "$rateLimitedCalls" }
-                    }
-                }
-            ]);
-
-            const result = analytics[0] || {
+            const analytics = await this.analyticsModel.find({ 
+                userId, 
+                date: { $gte: startDate } 
+            }).lean();
+            
+            const summary = analytics.reduce((accumulator, currentItem) => {
+                return {
+                    totalCalls: accumulator.totalCalls + currentItem.totalCalls,
+                    successfulCalls: accumulator.successfulCalls + currentItem.successfulCalls,
+                    failedCalls: accumulator.failedCalls + currentItem.failedCalls,
+                    rateLimitedCalls: accumulator.rateLimitedCalls + currentItem.rateLimitedCalls
+                };
+            }, {
                 totalCalls: 0,
                 successfulCalls: 0,
                 failedCalls: 0,
                 rateLimitedCalls: 0
+            });
+
+            // Calculate success rate and return complete result
+            return {
+                ...summary,
+                successRate: summary.totalCalls > 0 
+                    ? (summary.successfulCalls / summary.totalCalls) * 100 
+                    : 0
             };
-
-            // Calculate success rate
-            result.successRate = result.totalCalls > 0 
-                ? (result.successfulCalls / result.totalCalls) * 100 
-                : 0;
-
-            return result;
         } catch (error) {
             console.error('Failed to get user analytics summary:', error);
             return {
