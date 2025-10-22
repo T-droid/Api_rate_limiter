@@ -1,7 +1,13 @@
 #!/bin/bash
 
+# Rate Limiter Test Script
+# Usage: ./test_rate_limiter.sh [BASE_URL]
+# Example: ./test_rate_limiter.sh http://localhost:3000
+# Example: ./test_rate_limiter.sh https://your-deployed-app.com
+
 # Configuration
-API_KEY="sk-4abae6f232f6b19547a34e876c37d9a044ec26604588ddad"
+BASE_URL=${1:-"http://localhost:3000"}
+API_KEY="sk-0e4ee083d5e438d6cb0e500afc0f90ababe253ce3b15bc06"
 ENDPOINT="/documentation/featured"
 MAX_REQUESTS=15
 
@@ -14,10 +20,30 @@ NC='\033[0m'
 
 echo -e "${BLUE} Starting Rate Limiter Test${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "Base URL: ${YELLOW}${BASE_URL}${NC}"
 echo -e "API Key: ${YELLOW}${API_KEY}${NC}"
 echo -e "Endpoint: ${YELLOW}${BASE_URL}${ENDPOINT}${NC}"
 echo -e "Bucket Capacity: ${YELLOW}10 tokens${NC}"
 echo -e "Fill Rate: ${YELLOW}1 token/second${NC}"
+echo ""
+
+# Check if server is reachable
+echo -e "${BLUE}🔍 Checking server connectivity...${NC}"
+health_check=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL}" --connect-timeout 5)
+if [ "$health_check" -eq 000 ]; then
+    echo -e "${RED}❌ Error: Cannot connect to ${BASE_URL}${NC}"
+    echo -e "${YELLOW}💡 Make sure your server is running:${NC}"
+    echo -e "   ${BLUE}# For local development:${NC}"
+    echo -e "   ${BLUE}pnpm run start:dev${NC}"
+    echo -e "   ${BLUE}# Or with Docker:${NC}"
+    echo -e "   ${BLUE}docker-compose up -d${NC}"
+    echo -e ""
+    echo -e "${YELLOW}💡 Or specify a different URL:${NC}"
+    echo -e "   ${BLUE}./test_rate_limiter.sh http://your-server:3000${NC}"
+    exit 1
+else
+    echo -e "${GREEN}✅ Server is reachable (Status: ${health_check})${NC}"
+fi
 echo ""
 
 # Function to make API request

@@ -12,7 +12,7 @@ export class Analytics {
     userId: mongoose.Schema.Types.ObjectId;
 
     @Prop({ type: Date, required: true })
-    date: Date; // Date without time (e.g., 2025-10-20T00:00:00.000Z)
+    date: Date;
 
     @Prop({ type: Number, default: 0 })
     successfulCalls: number;
